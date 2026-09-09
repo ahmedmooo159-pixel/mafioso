@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="مافيوسو — لعبة المافيا المصرية للعب على تليفون واحد مع الأصحاب">
+  <meta name="theme-color" content="#0D0D0D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>مافيوسو 🎭 — لعبة المافيا المصرية</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Sound Toggle -->
+<button class="sound-toggle" id="sound-toggle" title="صوت">🔊</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<div id="app">
+
+  <!-- ======================================================
+       🏠 شاشة البداية (Home)
+       ====================================================== -->
+  <section class="screen" id="screen-home">
+    <div class="home-logo">🎭</div>
+    <h1 class="game-title">مافيوسو</h1>
+    <p class="home-subtitle">لعبة المافيا المصرية<br>للعب على تليفون واحد مع الشلة</p>
+    <div class="home-buttons">
+      <button class="btn btn-primary btn-lg" id="btn-new-game">
+        🎮 لعبة جديدة
+      </button>
+      <button class="btn btn-ghost" id="btn-view-stats">
+        📊 الإحصائيات
+      </button>
+    </div>
+    <div class="version-badge">v1.0 — مصري ١٠٠٪ 🇪🇬</div>
+  </section>
+
+  <!-- ======================================================
+       ⚙️ شاشة الإعداد (Setup)
+       ====================================================== -->
+  <section class="screen" id="screen-setup">
+    <div class="nav-bar">
+      <button class="back-btn" id="btn-setup-back">←</button>
+      <h2 class="screen-title" style="margin:0;text-align:right;">إعداد اللعبة ⚙️</h2>
+    </div>
+
+    <!-- عدد اللاعبين -->
+    <div class="card card-gold">
+      <div class="section-title">👥 عدد اللاعبين</div>
+      <div class="player-count-control">
+        <button class="count-btn btn" id="btn-decrease">−</button>
+        <div class="count-display" id="count-display">5</div>
+        <button class="count-btn btn" id="btn-increase">+</button>
+      </div>
+      <div style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:8px;">
+        <span id="mafioso-hint" style="color:var(--red-bright);">1 مافيوسو</span>
+        &nbsp;|&nbsp; من 5 لـ 10 لاعبين
+      </div>
+    </div>
+
+    <!-- أسامي اللاعبين -->
+    <div class="card">
+      <div class="section-title">✏️ اسم كل لاعب</div>
+      <div class="player-inputs-container" id="player-inputs">
+        <!-- يتولّد بالـ JS -->
+      </div>
+    </div>
+
+    <!-- خيارات -->
+    <div class="card">
+      <div class="section-title">🎛️ خيارات اللعبة</div>
+
+      <label class="toggle-group">
+        <div>
+          <div class="toggle-label">🕵️ الأدوار الخاصة</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">محقق، شاهد كاذب، حليف سري</div>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="toggle-special-roles" checked>
+          <div class="toggle-slider"></div>
+        </div>
+      </label>
+
+      <label class="toggle-group">
+        <div>
+          <div class="toggle-label">⏱️ تايمر وقت النقاش</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">عداد للنقاش في كل جولة</div>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="toggle-timer">
+          <div class="toggle-slider"></div>
+        </div>
+      </label>
+
+      <div class="form-group" id="timer-duration-group" style="display:none;">
+        <label class="form-label">مدة النقاش (ثواني)</label>
+        <input type="number" class="form-input" id="timer-duration" value="300" min="60" max="600" step="30">
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg" id="btn-start-game" style="margin-top:8px;">
+      🚀 ابدأ اللعبة!
+    </button>
+  </section>
+
+  <!-- ======================================================
+       📖 شاشة السيناريو (Scenario)
+       ====================================================== -->
+  <section class="screen" id="screen-scenario">
+    <div class="nav-bar">
+      <button class="back-btn" id="btn-scenario-back">←</button>
+      <h2 class="screen-title" style="margin:0;text-align:right;">القصة 📖</h2>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-bottom:16px;">
+      <div class="scenario-accusation" id="scenario-accusation-badge">🔪 تهمة قتل</div>
+    </div>
+
+    <div class="scenario-title" id="scenario-title">"عنوان السيناريو"</div>
+
+    <div class="card">
+      <div class="scenario-story" id="scenario-story">
+        القصة هتظهر هنا...
+      </div>
+    </div>
+
+    <div class="alert alert-gold">
+      📢 اقرأ القصة دي بصوت عالي للكل — بعدين التليفون هيتنقل على كل لاعب لوحده عشان يشوف دوره.
+    </div>
+
+    <button class="btn btn-primary btn-lg" id="btn-start-reveal" style="margin-top:8px;">
+      👀 ابدأ كشف الأدوار
+    </button>
+  </section>
+
+  <!-- ======================================================
+       🔄 شاشة الانتقال بين اللاعبين (Reveal Transition)
+       ====================================================== -->
+  <section class="screen" id="screen-reveal-transition">
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <div class="reveal-progress" id="reveal-dots"></div>
+    </div>
+
+    <div class="handoff-screen">
+      <div class="handoff-icon">📱</div>
+      <div class="screen-title" id="next-player-label">سلّم الموبايل لـ</div>
+      <div class="player-turn-name" id="next-player-name">اللاعب</div>
+      <p class="screen-subtitle">خلّيه يمسك التليفون لوحده ويدوس الزرار</p>
+      <button class="btn btn-primary btn-lg" id="btn-show-role" style="max-width:360px;">
+        👀 أنا عايز أشوف دوري
+      </button>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       🎭 شاشة الكشف (Reveal)
+       ====================================================== -->
+  <section class="screen" id="screen-reveal">
+    <div class="player-turn-card" style="margin-bottom:16px;">
+      <div class="player-turn-subtitle">دورك في اللعبة</div>
+      <div class="player-turn-name" id="reveal-player-title">اللاعب</div>
+    </div>
+
+    <div class="role-card" id="role-card">
+      <span class="role-emoji" id="reveal-role-emoji">✅</span>
+      <div class="role-title" id="reveal-role-title">بريء</div>
+      <div class="story-role-badge" id="reveal-story-role">دورك في القصة</div>
+      <div class="role-hint" id="reveal-role-hint">
+        تعليمات الدور هتظهر هنا...
+      </div>
+    </div>
+
+    <!-- معلومة الشاهد الكاذب -->
+    <div id="false-witness-info" style="display:none;" class="alert alert-red">
+      🙈 <strong>معلومة سرية ليك أنت بس:</strong><br>
+      أنت متأكد إنك شفت <strong id="false-target-name">اللاعب</strong> في مكان غريب قريب من الحادثة!
+      (ده مش صح بالضرورة، بس أنت مصدّق فيه خالص)
+    </div>
+
+    <!-- معلومة الحليف/الشريك -->
+    <div id="mafioso-ally-info" style="display:none;" class="ally-info">
+      🤝 <strong>سري ليك أنت بس:</strong><br>
+      شريكك / حليفك هو: <strong id="mafioso-partner-name">اللاعب</strong>
+    </div>
+
+    <div class="alert alert-gold" style="margin-top:12px;">
+      ⚠️ بعد ما تخلّص، ادفع الموبايل للكاش الكبير وبعدين دوس "التالي" — محدش يشوف شاشتك!
+    </div>
+
+    <button class="btn btn-ghost" id="btn-done-reveal" style="margin-top:12px;">
+      ✅ خلصت — التالي
+    </button>
+  </section>
+
+  <!-- ======================================================
+       💬 شاشة النقاش (Discussion)
+       ====================================================== -->
+  <section class="screen" id="screen-discussion">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <span class="voting-round-badge" id="discussion-round-badge">الجولة 1</span>
+      <span class="alive-count-badge" id="discussion-alive-count">لاعبين أحياء: <span>5</span></span>
+    </div>
+
+    <div class="screen-title">وقت النقاش 💬</div>
+    <p class="screen-subtitle">كل لاعب يدافع عن نفسه ويتهم اللي بيشك فيه — بالعامية المصرية!</p>
+
+    <!-- بطاقة خيط ودليل بداية النقاش -->
+    <div class="card card-gold discussion-clue-card" id="discussion-clue-card">
+      <div class="clue-header">
+        <span class="clue-tag">🔎 خيط الجريمة الأول</span>
+        <button class="clue-reroll-btn" id="btn-reroll-clue" type="button" title="تغيير الدليل">🔄 دليل تاني</button>
+      </div>
+      <div class="discussion-clue-text" id="discussion-clue-text">
+        دليل البداية هيظهر هنا...
+      </div>
+      <div class="starter-speaker-box" id="starter-speaker-box">
+        🎙️ <strong>البداية عندك يا <span id="starter-speaker-name">فلان</span>:</strong>
+        دافع عن نفسك الأول ورد ع الشبهة دي، وبعدها الكلام هيلف ع الباقيين!
+      </div>
+    </div>
+
+    <!-- Timer -->
+    <div id="timer-section" style="display:none;">
+      <div class="card" style="text-align:center;">
+        <div class="timer-display" id="timer-display">05:00</div>
+        <button class="btn btn-ghost btn-sm" id="btn-skip-timer" style="width:auto;margin:0 auto;">
+          ⏩ تخطّي الوقت
+        </button>
+      </div>
+    </div>
+
+    <!-- قائمة اللاعبين الأحياء -->
+    <div class="card">
+      <div class="section-title">👥 اللاعبين الأحياء (بالترتيب)</div>
+      <div class="player-order-list" id="discussion-player-list"></div>
+    </div>
+
+    <div class="alert alert-gold">
+      🎙️ كل واحد بدوره يتكلم ويدافع أو يتهم — بعد الكل يتكلم، روحوا للتصويت.
+    </div>
+
+    <button class="btn btn-danger btn-lg" id="btn-go-to-vote" style="margin-top:12px;">
+      🗳️ روح للتصويت
+    </button>
+  </section>
+
+  <!-- ======================================================
+       🗳️ شاشة التصويت (Voting)
+       ====================================================== -->
+  <section class="screen" id="screen-voting">
+    <div class="voting-header">
+      <div class="voting-round-badge" id="voting-round-label">الجولة 1</div>
+      <h2 class="screen-title">التصويت 🗳️</h2>
+      <p class="screen-subtitle">
+        اضغط على اسم اللاعب عدد مرات أصواته<br>
+        <strong id="voting-alive-count">5</strong> لاعب أحياء
+      </p>
+    </div>
+
+    <!-- قدرة المحقق (سرية) -->
+    <div class="detective-section" id="detective-section" style="display:none;">
+      <div class="detective-title">🕵️ أنت المحقق — استخدم قدرتك (سر بينك وبين نفسك)</div>
+      <select class="form-input" id="detective-target-select">
+        <option value="">-- اختار لاعب تتحقق منه --</option>
+      </select>
+      <button class="btn btn-blue btn-sm" id="btn-detective-check" style="margin-top:8px;">
+        🔍 اكشف
+      </button>
+      <div class="detective-result" id="detective-result" style="display:none;"></div>
+    </div>
+
+    <!-- أزرار التصويت -->
+    <div class="card">
+      <div class="section-title">اضغط على اسم اللاعب عشان تضيف صوت 👇</div>
+      <div class="vote-player-list" id="vote-buttons-container"></div>
+    </div>
+
+    <div class="alert alert-red">
+      ⚠️ مهم: اضغط على اسم كل لاعب بالعدد الصح لأصواته — زر واحد = صوت واحد
+    </div>
+
+    <button class="btn btn-danger btn-lg" id="btn-confirm-votes" style="margin-top:12px;">
+      🔔 كشف النتيجة
+    </button>
+  </section>
+
+  <!-- ======================================================
+       ❌ شاشة الإلغاء (Elimination)
+       ====================================================== -->
+  <section class="screen" id="screen-elimination">
+    <div class="elimination-card card card-red" style="margin-bottom:16px;">
+      <div class="eliminated-icon">⚖️</div>
+      <p style="color:var(--text-muted);margin-top:8px;">الأصوات قررت...</p>
+      <div class="eliminated-name" id="eliminated-name">اسم اللاعب</div>
+      <p style="color:var(--text-secondary);" id="eliminated-story-role">دوره في القصة</p>
+
+      <!-- لو كان مافيوسو -->
+      <div id="eliminated-mafioso-reveal" style="display:none;margin-top:12px;">
+        <div class="alert alert-red" style="animation: shake 0.5s ease;">
+          😱 كان هو المافيوسو الحقيقي!
+        </div>
+      </div>
+    </div>
+
+    <!-- دليل سري للمقصّى -->
+    <div class="card">
+      <div class="section-title">🤫 دليلك السري (ليك أنت بس)</div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">
+        اقرأ الرسالة دي لوحدك — وقدر تهمس بيها لأي لاعب حي بدورك
+      </p>
+      <div class="clue-box">
+        <div class="clue-label">🔦 دليل سري</div>
+        <div class="clue-text" id="elimination-clue-text">
+          هتظهر هنا...
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-gold">
+      💡 قرّر هتهمس الدليل ده لمين — بس لاعب واحد بس وبصوت واطي جداً!
+    </div>
+
+    <button class="btn btn-primary btn-lg" id="btn-after-elimination" style="margin-top:12px;">
+      ▶️ كمّل اللعبة
+    </button>
+  </section>
+
+  <!-- ======================================================
+       🔦 شاشة الحدث المفاجئ (Twist)
+       ====================================================== -->
+  <section class="screen" id="screen-twist">
+    <div class="twist-container">
+      <span class="twist-icon">🔦</span>
+      <h2 class="screen-title" style="color:var(--gold-light);">دليل جديد ظهر!</h2>
+      <p class="screen-subtitle">الأحداث اتقلبت — فكّروا تاني!</p>
+      <div class="twist-text" id="twist-text">
+        الدليل الجديد هيظهر هنا...
+      </div>
+      <div class="alert alert-gold" style="text-align:right;">
+        ⚠️ الدليل ده مش بالضرورة حقيقي بالكامل — استخدموه بعقلكم!
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg" id="btn-after-twist" style="margin-top:24px;">
+      ▶️ استمروا في النقاش
+    </button>
+  </section>
+
+  <!-- ======================================================
+       ⚖️ الجولة النهائية (Final Vote)
+       ====================================================== -->
+  <section class="screen" id="screen-final-vote">
+    <div class="final-vote-header">
+      <div style="font-size:3rem;margin-bottom:8px;">⚖️</div>
+      <h2 class="screen-title">الجولة النهائية!</h2>
+      <p class="screen-subtitle">
+        اللاعبين اللي اتقصوا يرجعوا ويصوّتوا دلوقتي —<br>
+        مين من الاتنين الباقيين هو المافيوسو؟
+      </p>
+    </div>
+
+    <!-- المرشّحان -->
+    <div class="card">
+      <div class="section-title">🎯 المرشّحان للاتهام</div>
+      <div class="final-candidates">
+        <button class="final-candidate-btn" id="final-candidate-1" data-id="">
+          <span style="font-size:1.5rem;">🤔</span>
+          <div class="final-voter-name" id="final-candidate-1-name">اللاعب 1</div>
+          <small style="color:var(--text-muted);" id="final-candidate-1-role">الدور</small>
+        </button>
+        <button class="final-candidate-btn" id="final-candidate-2" data-id="">
+          <span style="font-size:1.5rem;">🤔</span>
+          <div class="final-voter-name" id="final-candidate-2-name">اللاعب 2</div>
+          <small style="color:var(--text-muted);" id="final-candidate-2-role">الدور</small>
+        </button>
+      </div>
+    </div>
+
+    <!-- ناخب حالي -->
+    <div class="card">
+      <div class="final-voter-name" id="final-voter-name">دور: —</div>
+      <div style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px;" id="final-vote-progress">1 من 5</div>
+      <p style="font-size:0.9rem;color:var(--text-secondary);">
+        دوس على اللاعب اللي بتعتقد إنه المافيوسو 👆
+      </p>
+    </div>
+
+    <!-- عداد الأصوات -->
+    <div class="card">
+      <div class="section-title">📊 الأصوات لحد دلوقتي</div>
+      <div class="final-vote-tally">
+        <div class="tally-bar">
+          <div class="tally-name" id="final-tally-name-1">—</div>
+          <span class="tally-count" id="final-tally-1">0</span>
+          <small>صوت</small>
+        </div>
+        <div class="tally-bar">
+          <div class="tally-name" id="final-tally-name-2">—</div>
+          <span class="tally-count" id="final-tally-2">0</span>
+          <small>صوت</small>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-danger btn-lg" id="btn-confirm-final-vote" style="margin-top:12px;">
+      ✅ سجّل الصوت ده
+    </button>
+    <button class="btn btn-ghost" id="btn-skip-final-vote" style="margin-top:8px;">
+      ⏭️ اكشف النتيجة مباشرة
+    </button>
+  </section>
+
+  <!-- ======================================================
+       🏆 شاشة النتيجة (Results)
+       ====================================================== -->
+  <section class="screen" id="screen-results">
+    <!-- Banner الفوز/الخسارة -->
+    <div class="results-banner innocents-win" id="results-banner">
+      <span class="results-emoji" id="results-emoji">🎉</span>
+      <div class="results-headline" id="results-headline">الأبرياء كسبوا!</div>
+      <div class="results-subline" id="results-subline"></div>
+    </div>
+
+    <!-- نتيجة التصويت النهائي -->
+    <div class="card">
+      <div class="section-title">⚖️ حكم الجماعة</div>
+      <p style="font-size:0.95rem;color:var(--text-secondary);">
+        الأصوات وقعت على: <strong style="color:var(--gold);" id="results-accused-name">—</strong>
+      </p>
+    </div>
+
+    <!-- كشف الأدوار الكاملة -->
+    <div class="card">
+      <div class="section-title">🎭 كشف الأدوار الكاملة</div>
+      <div class="roles-reveal" id="roles-reveal-list"></div>
+    </div>
+
+    <button class="btn btn-primary btn-lg" id="btn-play-again" style="margin-top:8px;">
+      🎮 العبوا تاني
+    </button>
+    <button class="btn btn-ghost" id="btn-view-stats-from-results" style="margin-top:8px;">
+      📊 شوف الإحصائيات
+    </button>
+  </section>
+
+  <!-- ======================================================
+       📊 شاشة الإحصائيات (Stats)
+       ====================================================== -->
+  <section class="screen" id="screen-stats">
+    <div class="nav-bar">
+      <button class="back-btn" id="btn-stats-back">←</button>
+      <h2 class="screen-title" style="margin:0;text-align:right;">الإحصائيات 📊</h2>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="stats-summary">
+      <div class="stat-card">
+        <span class="stat-number" id="stat-total-games">0</span>
+        <span class="stat-label">إجمالي الجلسات</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-innocent-wins">0</span>
+        <span class="stat-label">انتصارات الأبرياء</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-mafioso-wins">0</span>
+        <span class="stat-label">انتصارات المافيوسو</span>
+      </div>
+      <div class="stat-card" style="background:rgba(139,0,0,0.1);border-color:rgba(139,0,0,0.3);">
+        <span class="stat-number" id="stat-top-mafioso" style="font-size:1rem;color:var(--red-bright);">—</span>
+        <span class="stat-label">أكتر مافيوسو نجح</span>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="sessions">الجلسات</button>
+      <button class="tab-btn" data-tab="players">اللاعبين</button>
+    </div>
+
+    <div class="tab-content active" data-tab="sessions">
+      <div class="scroll-area" id="sessions-list">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <p>مفيش جلسات بعد</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" data-tab="players">
+      <div id="player-stats-table-container">
+        <div class="empty-state">
+          <div class="empty-icon">👤</div>
+          <p>مفيش إحصائيات لاعبين بعد</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-ghost" id="btn-clear-stats" style="margin-top:16px;color:var(--red-bright);border-color:rgba(192,57,43,0.3);">
+      🗑️ مسح كل الإحصائيات
+    </button>
+  </section>
+
+</div><!-- /#app -->
+
+<!-- Scripts (بالترتيب مهم) -->
+<script src="js/scenarios.js"></script>
+<script src="js/twists.js"></script>
+<script src="js/roles.js"></script>
+<script src="js/gameState.js"></script>
+<script src="js/sounds.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
